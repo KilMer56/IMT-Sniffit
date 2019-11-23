@@ -17,7 +17,7 @@ class Stream:
         :type time: long
         """
         if self.time != 0 and time - self.time > self.max_timestamp_gap:
-            self.flush()
+            self.flush(time)
         else:
             self.time = time
     
@@ -30,12 +30,12 @@ class Stream:
         self.payload += int(packet.length.raw_value, 16)
         self.set_time(round(float(packet.sniff_timestamp)))
 
-    def flush(self):
+    def flush(self, time):
         """
         Flush stream to ElasticSearch.
         Reset the payload and time.
         """
-        print("flushing")
+        print("flushing ", self.ip_server , ":", self.port_server, "at", time, "payload:", self.payload)
         self.payload = 0
         self.time = 0
 
