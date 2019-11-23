@@ -21,7 +21,7 @@ def handle_packet(packet):
             stream_map[index] = Stream(packet.ipv6.src, packet.tcp.srcport, packet.ipv6.dst, packet.tcp.dstport, 10)
     stream_map[index].add_packet(packet)
 
-capture.apply_on_packets(handle_packet, timeout=100)
+capture.apply_on_packets(handle_packet)
 
 print("Closing non flushed stream")
 end_time = round(time.time())
