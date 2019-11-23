@@ -2,8 +2,6 @@ import pyshark
 import time
 from stream import Stream
 
-capture = pyshark.FileCapture('./src/capture.pcap')
-
 stream_map = {}
 
 def handle_packet(packet):
@@ -23,12 +21,20 @@ def handle_packet(packet):
                 stream_map[index] = Stream(packet.ipv6.src, packet.tcp.srcport, packet.ipv6.dst, packet.tcp.dstport, 10)
         stream_map[index].add_packet(packet)
 
+def flush_remaining_streams():
+    """
+    Flush the stream that still have non flushed content.
+    """
+    print("Flushing non flushed stream")
+    end_time = round(time.time())
+    for key in stream_map:
+        stream = stream_map[key]
+        if stream.time != 0:
+            stream.flush(end_time)
+
+
+capture = pyshark.FileCapture('./src/capture.pcap')
+print("Starting packet analyzing process")
 capture.apply_on_packets(handle_packet)
 
-print("Closing non flushed stream")
-end_time = round(time.time())
-
-for key in stream_map:
-    stream = stream_map[key]
-    if stream.time != 0:
-        stream.flush(end_time)
+flush_remaining_streams()
