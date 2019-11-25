@@ -7,4 +7,4 @@ RUN apt-get update && apt-get install -y \
     tshark \
     && pip3 --no-cache-dir install -r requirements.txt
 
-CMD [ "python3" , "./src/recorder.py" ]
+# CMD [ "python3" , "./src/recorder.py" ]

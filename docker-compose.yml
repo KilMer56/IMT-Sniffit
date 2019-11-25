@@ -1,9 +1,9 @@
 version: '3'
 services:
-  # sniffer:
-  #   build: .
-  #   container_name: sniffer
-  #   network_mode: host
+  sniffer:
+    build: .
+    container_name: sniffer
+    network_mode: host
   # openvpn-as:
   #   image: linuxserver/openvpn-as:latest
   #   container_name: openvpn-as
@@ -20,17 +20,17 @@ services:
   #     - 1194:1194/udp
   #     - 80:80
   #   restart: unless-stopped
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.4.2
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    volumes:
-      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+  #   container_name: elasticsearch
+  #   environment:
+  #     - discovery.type=single-node
+  #   ports:
+  #     - "9200:9200"
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.4.2
+  #   container_name: kibana
+  #   ports:
+  #     - "5601:5601"
+  #   volumes:
+  #     - ./kibana.yml:/usr/share/kibana/config/kibana.yml

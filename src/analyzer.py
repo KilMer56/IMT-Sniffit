@@ -1,5 +1,7 @@
 import pyshark
 import time
+import sys
+
 from stream import Stream
 
 stream_map = {}
@@ -32,9 +34,9 @@ def flush_remaining_streams():
         if stream.time != 0:
             stream.flush(end_time)
 
+if sys.argv[1] is not None:
+    capture = pyshark.FileCapture('./src/capture/'+sys.argv[1]+'.pcap')
+    print("Starting packet analyzing process")
+    capture.apply_on_packets(handle_packet)
 
-capture = pyshark.FileCapture('./src/capture.pcap')
-print("Starting packet analyzing process")
-capture.apply_on_packets(handle_packet)
-
-flush_remaining_streams()
+    flush_remaining_streams()
