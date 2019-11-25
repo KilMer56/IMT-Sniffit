@@ -16,9 +16,9 @@ def handle_packet(packet):
         index = packet.tcp.stream.showname_value
         if index not in stream_map:
             if hasattr(packet, "ip") :
-                stream_map[index] = Stream(packet.ip.src, packet.tcp.srcport, packet.ip.dst, packet.tcp.dstport, 10)
+                stream_map[index] = Stream(packet.ip.src, packet.tcp.srcport, packet.ip.dst, packet.tcp.dstport, 1)
             else:
-                stream_map[index] = Stream(packet.ipv6.src, packet.tcp.srcport, packet.ipv6.dst, packet.tcp.dstport, 10)
+                stream_map[index] = Stream(packet.ipv6.src, packet.tcp.srcport, packet.ipv6.dst, packet.tcp.dstport, 1)
         stream_map[index].add_packet(packet)
 
 def flush_remaining_streams():

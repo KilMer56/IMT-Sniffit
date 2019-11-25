@@ -1,4 +1,5 @@
 import socket
+from es_dao import post_data
 
 class Stream:
     
@@ -44,6 +45,7 @@ class Stream:
             host = self.ip_server
         print(host)
         print("flushing ", self.ip_server, ":", self.port_server, "at", time, "payload:", self.payload)
+        post_data(self.time,  self.payload)
         self.payload = 0
         self.time = 0
 
