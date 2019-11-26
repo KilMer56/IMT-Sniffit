@@ -28,13 +28,12 @@ filters += "&&!(ip.src==" + IP_SSH + ")&&!(ipv6.src=="+ IPV6_SSH + ")"
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', '-o', default='capture', nargs='?', help='The name of the output .pcap file')
 parser.add_argument('--time', '-t', type=int, nargs='?', help='The capture period in seconds')
-parser.add_argument('--mode', '-m', choices=['packet','stream'], default='stream', nargs='?', help='The mode of capture')
-parser.add_argument('--verbose', '-v', nargs='?', help='Is in verbose mode')
 
 args = parser.parse_args()
 
 # CONFIGURE CAPTURE
 
+print("Output file : src/"+args.output+".pcap")
 capture = pyshark.LiveCapture(interface='eth0', display_filter=filters, output_file="./src/capture/"+args.output+".pcap")
 
 # LAUNCH CAPTURE

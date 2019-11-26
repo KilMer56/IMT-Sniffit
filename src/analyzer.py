@@ -1,10 +1,12 @@
 import pyshark
 import time
 import sys
+import argparse
 
 from stream import Stream
 
 stream_map = {}
+
 
 def handle_packet(packet):
     """
@@ -34,9 +36,21 @@ def flush_remaining_streams():
         if stream.time != 0:
             stream.flush(end_time)
 
-if sys.argv[1] is not None:
-    capture = pyshark.FileCapture('./src/capture/'+sys.argv[1]+'.pcap')
-    print("Starting packet analyzing process")
-    capture.apply_on_packets(handle_packet)
+# GET ARGUMENTS
 
-    flush_remaining_streams()
+parser = argparse.ArgumentParser()
+parser.add_argument('--input', '-i', default='capture', nargs='?', help='The name of the output .pcap file')
+parser.add_argument('--mode', '-m', choices=['packet','stream'], default='stream', nargs='?', help='The mode of capture')
+parser.add_argument('--verbose', '-v', nargs='?', help='Is in verbose mode')
+
+args = parser.parse_args()
+
+# ANALYZE THE FILE
+
+print("Input file : src/"+args.input+".pcap")
+capture = pyshark.FileCapture('./src/capture/'+args.input+'.pcap')
+
+print("Starting packet analyzing process")
+capture.apply_on_packets(handle_packet)
+
+flush_remaining_streams()
