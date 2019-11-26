@@ -2,7 +2,7 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 es = Elasticsearch([{'host': 'localhost', 'port':9200}])
 
-def post_data(timestamp, size):
+def post_data(index, timestamp, size):
     """
     Index data in the ElasticSearch index
 
@@ -16,4 +16,5 @@ def post_data(timestamp, size):
         'timestamp': datetime.fromtimestamp(timestamp),
         'size': size	
     }
-    es.index(index="sniffer_data", doc_type="packet", body=packet)
+    
+    es.index(index=index, doc_type="packet", body=packet)

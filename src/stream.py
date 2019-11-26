@@ -43,9 +43,8 @@ class Stream:
             host = socket.gethostbyaddr(self.ip_server)[0]
         except:
             host = self.ip_server
-        print(host)
-        print("flushing ", self.ip_server, ":", self.port_server, "at", time, "payload:", self.payload)
-        post_data(self.time,  self.payload)
+            pass
+        post_data("stream", self.time,  self.payload)
         self.payload = 0
         self.time = 0
 
