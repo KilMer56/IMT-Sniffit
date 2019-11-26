@@ -1,6 +1,7 @@
 import pyshark
 import sys
 import os
+import argparse
 
 from dotenv import load_dotenv
 
@@ -22,23 +23,26 @@ filters += "&&(ipv6.dst==fe80::f816:3eff:fef6:de3a||ip.dst==137.74.196.58)"
 filters += "&&!(ip.src==" + IP_CLIENT + ")&&!(ipv6.src==" + IPV6_CLIENT + ")"
 filters += "&&!(ip.src==" + IP_SSH + ")&&!(ipv6.src=="+ IPV6_SSH + ")"
 
-target_file = "capture"
+# GET ARGUMENTS
 
-if len(sys.argv) > 1 and sys.argv[1] is not None:
-  target_file = sys.argv[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('--output', '-o', default='capture', nargs='?', help='The name of the output .pcap file')
+parser.add_argument('--time', '-t', type=int, nargs='?', help='The capture period in seconds')
+parser.add_argument('--mode', '-m', choices=['packet','stream'], default='stream', nargs='?', help='The mode of capture')
+parser.add_argument('--verbose', '-v', nargs='?', help='Is in verbose mode')
+
+args = parser.parse_args()
 
 # CONFIGURE CAPTURE
 
-capture = pyshark.LiveCapture(interface='eth0', display_filter="", output_file="./src/capture/"+target_file+".pcap")
-
-duration = 900
-
-if len(sys.argv) > 2 and sys.argv[2] is not None:
-   duration = int(sys.argv[2])
+capture = pyshark.LiveCapture(interface='eth0', display_filter=filters, output_file="./src/capture/"+args.output+".pcap")
 
 # LAUNCH CAPTURE
 
-print('Launching Pyshark for '+str(duration)+'secs')
-
-capture.sniff(timeout=duration)
+if args.time is not None:
+  print('Launching Pyshark for '+str(args.time)+'secs')
+  capture.sniff(timeout=args.time)
+else:
+  print('Launching Pyshark in continuous mode')
+  capture.sniff()
 
