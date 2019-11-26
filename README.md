@@ -2,12 +2,21 @@
 
 L'objectif de ce projet était de fournir les outils nécessaires à l'étude du traffic internet de notre vie courant afin d'être utilisée lors de problématiques liées au Edge Computing
 
+# Table des matières
+1. [ Portée du projet ](#portee-du-projet)
+2. [ Solutions non retenues ](#solutions-non-retenues)
+3. [ Solution retenue ](#solution-retenue)
+4. [ Architecture de la solution ](#architecture-de-la-solution)
+5. [ Exemples de données obtenus ](#exemples-de-données-obtenus)
+
+<a name="portee-du-projet"></a>
 # Portée du projet
 
 Afin de fournir une solution fonctionnelle en un temps assez court, la portée du projet a été limitée aux paquets TCP/IP. La solution fournit devaient également être le moins intrusive possible.
 
 `TO COMPLETE`
 
+<a name="solutions-non-retenues"></a>
 # Solutions non retenues
 
 ## Mitmproxy
@@ -42,6 +51,7 @@ Libtins est un wrapper autour de libpcap permettant d'analyser le traffic entran
 - Bas niveau nécessitant d'être prêt à mettre les mains dans le cambouis
 - Document peu accessible, peu vulgarisée
 
+<a name="solution-retenue"></a>
 # Solution retenue
 
 ## VPN sniffé avec PyShark
@@ -59,6 +69,7 @@ PyShark est une librairie se basant sur TShark. En lançant un processus TShark,
 - Documentation seulement partielle
   - _To easily view the different attributes of the layer, you can simply run dir(packet.my_layer)_, source : http://kiminewt.github.io/pyshark/
 
+<a name="architecture-de-la-solution"></a>
 # Architecture de la solution
 
 `TODO insert image`
@@ -83,6 +94,7 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
 
 `TODO UNE IMAGE`
 
+<a name="exemples-de-données-obtenus"></a>
 # Exemples de données obtenus
 
 `TODO UNE IMAGE`
