@@ -14,7 +14,16 @@ L'objectif de ce projet était de fournir les outils nécessaires à l'étude du
 
 Afin de fournir une solution fonctionnelle en un temps assez court, la portée du projet a été limitée aux paquets TCP/IP. La solution fournit devaient également être le moins intrusive possible.
 
-`TO COMPLETE`
+## Exemple d'applications qui peuvent être étudiées
+
+* Youtube
+* Netlix
+* Spotify
+* Deezer
+* Waze
+* Google Maps
+* Messengers (What'sapp, Gmail/Outlook ...)
+* Réseaux sociaux (Instagram, Twitter ...)
 
 <a name="solutions-non-retenues"></a>
 # Solutions non retenues
@@ -72,7 +81,7 @@ PyShark est une librairie se basant sur TShark. En lançant un processus TShark,
 <a name="architecture-de-la-solution"></a>
 # Architecture de la solution
 
-`TODO insert image`
+!["Architecture"](./assets/Capitrain.png)
 
 ## Recorder
 
@@ -91,8 +100,6 @@ Si le temps entre deux packets dépassent l'écart maximum pour ce stream, alors
 L'utilisation de ElasticSearch permet une bonne scalabilité à moindre coût. En fournissant des agrégations rapides, il permet une analyse performante des données. De plus, Kibana fournit énormément de représentation toutes faites tels que les représentations Timelion ou TSVB pour les données time series.
 
 Ces deux composants peuvent être déployés rapidement grâce à docker et docker-compose
-
-`TODO UNE IMAGE`
 
 <a name="exemples-de-données-obtenus"></a>
 # Exemples de données obtenus
