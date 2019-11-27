@@ -3,14 +3,23 @@ from es_dao import post_data
 
 class Stream:
     
-    def __init__(self, ip_server, port_server, ip_client, port_client, max_timestamp_gap):
+    def __init__(self, ip_server, port_server, ip_client, port_client):
         self.ip_server = ip_server
         self.port_server = port_server
         self.ip_client = ip_client
         self.port_client = port_client
-        self.max_timestamp_gap = max_timestamp_gap
         self.payload = 0
         self.time = 0
+        self.deltaNumber = 0
+        self.deltaSum = 0
+        self.averageDelta = 0
+
+    def update_delta(self, time):
+        delta = time - self.time
+        self.time = time
+        self.deltaNumber += 1
+        self.deltaSum += delta
+        self.averageDelta = self.deltaSum / self.deltaNumber
 
     def set_time(self, time):
         """
@@ -19,7 +28,7 @@ class Stream:
         :param time : the time of the last packet
         :type time: long
         """
-        if self.time != 0 and time - self.time > self.max_timestamp_gap:
+        if self.time != 0 and time - self.time > self.averageDelta:
             self.flush(time)
         else:
             self.time = time
