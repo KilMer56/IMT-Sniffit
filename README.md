@@ -10,10 +10,11 @@ Afin d'améliorer le partage et l’échange de données, différents outils son
 L'objectif de ce projet était de fournir les outils nécessaires à l'étude du trafic internet de notre vie courante afin d'être utilisés lors de problématiques liées au Edge Computing.
 
 Dans les informations à retrouver, on avait par exemple :
-* La taille des paquets échangés
-* Le protocole utilisé
-* Le type des données
-* Etc.
+
+- La taille des paquets échangés
+- Le protocole utilisé
+- Le type des données
+- Etc.
 
 Par la suite, une analyse des données collectées devait être effectué afin de pouvoir donner un état des lieux de la solution produite.
 
@@ -162,8 +163,13 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
 ## Analyzer
 
 - Améliorer le système de regroupement des paquets en stream pour tendre vers la meilleure solution possible
-- Faire des batchs pour l'envoi des données vers Elastic Search
-- Fournir la possibilité de sortir les données autrement (JSON, CSV, ...)
+- Faire des batchs pour l'envoi des données vers Elastic Search ou JSON
+- Fournir la possibilité de sortir les données autrement (CSV, ...)
+
+## Global
+
+- Industrialiser les tests (au moins unitaire)
+- Un petit peu de refactoring
 
 <a name="installation"></a>
 
@@ -278,10 +284,11 @@ python3 src/analyzer.py
 
 ### Paramètres
 
-| Paramètre | Short |  Type  |                 Description                  |  Défaut |
-| --------- | :---: | :----: | :------------------------------------------: | ------: |
-| --input   |  -i   | String | Nom du fichier présent dans /capture (.pcap) | capture |
-| --mode    |  -m   | String |      Méthode d'analyse [packet, stream]      |  stream |
+| Paramètre    | Short |  Type  |                  Description                  |  Défaut |
+| ------------ | :---: | :----: | :-------------------------------------------: | ------: |
+| --input      |  -i   | String | Nom du fichier présent dans /capture (.pcap)  | capture |
+| --mode       |  -m   | String |      Méthode d'analyse [packet, stream]       |  stream |
+| --outputType |  -o   | String | Méthode d'extraction des résultats [JSON, ES] |      ES |
 
 ## Kibana
 
