@@ -155,6 +155,8 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
 
 ### Via Docker
 
+Pour installer OpenVPN, il suffit d'exécuter la commande suivante dans le dossier `openvpn` :
+
 ```shell
 docker-compose up -d
 ```
