@@ -140,6 +140,7 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
 ## Recorder
 
 - Etendre les protocoles supportés
+- Permettre aisément le record de plusieurs clients
 
 ## Analyzer
 
@@ -219,6 +220,15 @@ Ces variables permettront de ne pas enregistrer les échanges marqués comme 'No
 - `IPV6_VPN` -> Adresse IPV6 du server OpenVPN
 - `IP_ES` -> Adresse IP du server ElasticSearch
 - `PORT_ES` -> Port du serveur ElasticSearch
+
+Si aucun VPN n'est utilisé, il est toujours possible d'utiliser le projet en ne donnant pas de valeur aux variables suivantes :
+
+- `IP_CLIENT`
+- `IPV6_CLIENT`
+- `IP_SSH`
+- `IPV6_SSH`
+
+Et en mettant votre ip/ipv6 dans les variables `IP_VPN`, `IPV6_VPN`.
 
 <a name="utilisation"></a>
 
