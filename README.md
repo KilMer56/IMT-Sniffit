@@ -156,7 +156,7 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
 
 ### Via Docker
 
-Pour installer OpenVPN, il suffit d'exécuter la commande suivante dans le dossier `openvpn` :
+Pour installer OpenVPN, exécuter la commande suivante dans le dossier `openvpn` :
 
 ```shell
 docker-compose up -d
@@ -176,13 +176,13 @@ Login : `admin`
 
 Password : `password`
 
-Une fois ajouté, il suffit de connecter votre device en utilisant l'application OpenVPN, accès de type _Access Server_.
+Une fois ajouté, connecter votre appareil en utilisant l'application OpenVPN, configurée en accès _Access Server_.
 
 ## ElasticSearch / Kibana
 
 ### Via docker
 
-Pour la stack EK, il suffit d'exécuter la commande suivante dans le dossier `elasticsearch` :
+Pour la stack EK, exécuter la commande suivante dans le dossier `elasticsearch` :
 
 ```shell
 docker-compose up -d
@@ -208,7 +208,7 @@ Librairies python installées :
 
 ## Sniffer
 
-Maintenant que les dépendances sont en place, il suffit de configurer le sniffer en mettant à jour les variables d'environnement du fichier `.env`.
+Maintenant que les dépendances sont en place, configurer le sniffer en mettant à jour les variables d'environnement du fichier `.env`.
 
 Ces variables permettront de ne pas enregistrer les échanges marqués comme 'Non traité' sur le schéma.
 
