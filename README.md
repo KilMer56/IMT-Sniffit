@@ -294,8 +294,8 @@ Plusieurs paramètres peuvent être changés.
 
 Tout d'abord, les filtres :
 
-- `dest`: destination du stream/packet, peut-être vpn, une adresse ip ou une regex (ex : `*facebook*`)
-- `src`: destination du stream/packet, peut-être vpn, une adresse ip ou une regex (ex : `*facebook*`)
+- `dest`: destination du stream/packet, peut-être vpn, une adresse ip ou du pattern matching (ex : `*facebook*`)
+- `src`: destination du stream/packet, peut-être vpn, une adresse ip ou du pattern matching (ex : `*facebook*`)
 - `protocole`: `udp` ou `tcp`
 
 Ces filtres sont librement composables et optionnels.
