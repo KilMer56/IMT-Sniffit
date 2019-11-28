@@ -104,7 +104,7 @@ Responsable de l'analyse du trafic. L'analyzer vient parcourir les packets enreg
 
 Les écarts entre chaque packets sont analysés et une moyenne est réalisée.
 
-Si le temps entre deux packets dépasse l'écart moyen calculé pour ce stream, alors son contenu est flush vers la base de données. Le même processus se produit également si le stream n'est pas fermé à la fin de l'exécution du script.
+Si le temps entre deux packets d'un même stream dépasse l'écart moyen calculé pour ce stream, alors son contenu est flush vers la base de données. Le même processus se produit également si le stream n'est pas fermé à la fin de l'exécution du script.
 
 ## ElasticSearch et Kibana
 
