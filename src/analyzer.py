@@ -10,8 +10,10 @@ from stream import Stream
 from dao import post_data
 from store import set_output_type, set_output_name, init_es, open_udp_file, open_tcp_file, close_tcp_file, close_udp_file
 
-stream_map_from_client = {}
-stream_map_to_client = {}
+# We need to handle udp and tcp separately
+# Wireshark is supposed to give a stream index depending on the protocol, but we've had collision during
+# the testing process.
+stream_maps = {"udp" : {'from_client': {}, 'to_client':{}}, "tcp":  {"from_client": {}, "to_client": {}}}
 
 load_dotenv()
 
@@ -53,7 +55,7 @@ def calculate_average_delta(packet):
         index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
         src = packet.ip.src if hasattr(packet, "ip") else packet.ipv6.src
         dst = packet.ip.dst if hasattr(packet, "ip") else packet.ipv6.dst
-        stream_map = stream_map_from_client if src == IP_VPN or src == IPV6_VPN else stream_map_to_client
+        stream_map = stream_maps[protocol]["from_client"] if src == IP_VPN or src == IPV6_VPN else stream_maps[protocol]["to_client"]
 
         if index not in stream_map:
             stream_map[index] = Stream(src, dst, protocol)
@@ -75,7 +77,7 @@ def handle_packet(packet):
             index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
             src = packet.ip.src if hasattr(packet, "ip") else packet.ipv6.src
             dst = packet.ip.dst if hasattr(packet, "ip") else packet.ipv6.dst
-            stream_map = stream_map_from_client if src == IP_VPN or src == IPV6_VPN else stream_map_to_client
+            stream_map = stream_maps[protocol]["from_client"] if src == IP_VPN or src == IPV6_VPN else stream_maps[protocol]["to_client"]
             stream_map[index].add_packet(packet)
         else:
             post_data("packet", packet.ip.src, packet.ip.dst, float(packet.sniff_timestamp), int(packet.length.raw_value, 16), protocol)
@@ -86,14 +88,15 @@ def flush_remaining_streams():
     """
     print("Flushing non flushed stream")
     end_time = time.time()
-    for key in stream_map_from_client:
-        stream = stream_map_from_client[key]
-        if stream.time != 0:
-            stream.flush(end_time)
-    for key in stream_map_to_client:
-        stream = stream_map_to_client[key]
-        if stream.time != 0:
-            stream.flush(end_time)
+    for protocol in stream_maps:
+        for key in stream_maps[protocol]["from_client"]:
+            stream = stream_maps[protocol]["from_client"][key]
+            if stream.time != 0:
+                stream.flush(end_time)
+        for key in stream_maps[protocol]["to_client"]:
+            stream = stream_maps[protocol]["to_client"][key]
+            if stream.time != 0:
+                stream.flush(end_time)
 
 # ANALYZE THE FILE
 
@@ -103,10 +106,11 @@ try:
     if isStreamMode:
         print("Calculating average delta")
         capture.apply_on_packets(calculate_average_delta)
-        for key in stream_map_from_client:
-            stream_map_from_client[key].set_time(0)
-        for key in stream_map_to_client:
-            stream_map_to_client[key].set_time(0)
+        for protocol in stream_maps:
+            for key in stream_maps[protocol]["from_client"]:
+                stream_maps[protocol]["from_client"][key].set_time(0)
+            for key in stream_maps[protocol]["to_client"]:
+                stream_maps[protocol]["to_client"][key].set_time(0)
 except:
     print(traceback.print_exc())
     pass
@@ -116,6 +120,7 @@ try:
     capture.apply_on_packets(handle_packet)
 except:
     print("Caught exception during process, last process might have been cut during reception")
+    print(traceback.print_exc())
     pass
 
 if isStreamMode:
@@ -125,4 +130,4 @@ if args.outputType == "JSON":
     close_udp_file()
     close_tcp_file()
 
-print("done")
+print("Done")
