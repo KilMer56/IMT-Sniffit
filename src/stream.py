@@ -3,8 +3,9 @@ from es_dao import post_data
 
 class Stream:
     
-    def __init__(self, ip_server, protocol):
-        self.ip_server = ip_server
+    def __init__(self, ip_source, ip_dest, protocol):
+        self.ip_source = ip_source
+        self.ip_dest = ip_dest
         self.protocol = protocol
         self.payload = 0
         self.time = 0
@@ -45,13 +46,13 @@ class Stream:
         Flush stream to ElasticSearch.
         Reset the payload and time.
         """
-        host = None
-        try:
-            host = socket.gethostbyaddr(self.ip_server)[0]
-        except:
-            host = self.ip_server
-            pass
-        post_data("stream", self.time,  self.payload, self.protocol)
+        # host = None
+        # try:
+        #     host = socket.gethostbyaddr(self.ip_server)[0]
+        # except:
+        #     host = self.ip_server
+        #     pass
+        post_data("stream", self.ip_source, self.ip_dest, self.time, self.payload, self.protocol)
         self.payload = 0
         self.time = 0
 

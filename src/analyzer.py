@@ -2,11 +2,20 @@ import pyshark
 import time
 import sys
 import argparse
+import os
+import traceback
+from dotenv import load_dotenv
 
 from stream import Stream
 from es_dao import post_data
 
-stream_map = {}
+stream_map_from_client = {}
+stream_map_to_client = {}
+
+load_dotenv()
+
+IP_CLIENT = os.getenv('IP_CLIENT')
+IPV6_CLIENT = os.getenv('IPV6_CLIENT')
 
 # GET ARGUMENTS
 
@@ -31,11 +40,15 @@ def calculate_average_delta(packet):
     if is_processable(packet):
         protocol = "tcp" if hasattr(packet, "tcp") else "udp"
         index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
+        src = packet.ip.src if hasattr(packet, "ip") else packet.ipv6.src
+        dst = packet.ip.dst if hasattr(packet, "ip") else packet.ipv6.dst
+        stream_map = stream_map_from_client if src == IP_CLIENT or src == IPV6_CLIENT else stream_map_to_client
+
         if index not in stream_map:
             if hasattr(packet, "ip") :
-                stream_map[index] = Stream(packet.ip.src, protocol)
+                stream_map[index] = Stream(src, dst, protocol)
             else:
-                stream_map[index] = Stream(packet.ipv6.src, protocol)
+                stream_map[index] = Stream(src, dst, protocol)
         if stream_map[index].time == 0:
             stream_map[index].set_time(float(packet.sniff_timestamp))
         else:
@@ -52,9 +65,12 @@ def handle_packet(packet):
         protocol = "tcp" if hasattr(packet, "tcp") else "udp"
         if isStreamMode:
             index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
+            src = packet.ip.src if hasattr(packet, "ip") else packet.ipv6.src
+            dst = packet.ip.dst if hasattr(packet, "ip") else packet.ipv6.dst
+            stream_map = stream_map_from_client if src == IP_CLIENT or src == IPV6_CLIENT else stream_map_to_client
             stream_map[index].add_packet(packet)
         else:
-            post_data("packet", float(packet.sniff_timestamp), int(packet.length.raw_value, 16), protocol)
+            post_data("packet", packet.ip.src, packet.ip.dst, float(packet.sniff_timestamp), int(packet.length.raw_value, 16), protocol)
 
 def flush_remaining_streams():
     """
@@ -62,8 +78,12 @@ def flush_remaining_streams():
     """
     print("Flushing non flushed stream")
     end_time = time.time()
-    for key in stream_map:
-        stream = stream_map[key]
+    for key in stream_map_from_client:
+        stream = stream_map_from_client[key]
+        if stream.time != 0:
+            stream.flush(end_time)
+    for key in stream_map_to_client:
+        stream = stream_map_to_client[key]
         if stream.time != 0:
             stream.flush(end_time)
 
@@ -75,13 +95,17 @@ try:
     if isStreamMode:
         print("Calculating average delta")
         capture.apply_on_packets(calculate_average_delta)
-        for key in stream_map:
-            stream_map[key].set_time(0)
-
-    print("Starting packet analyzing process")
-    capture.apply_on_packets(handle_packet)
+        for key in stream_map_from_client:
+            stream_map_from_client[key].set_time(0)
+        for key in stream_map_to_client:
+            stream_map_to_client[key].set_time(0)
 except:
+    print(traceback.print_exc())
     pass
+
+print("Starting packet analyzing process")
+capture.apply_on_packets(handle_packet)
+
 
 if isStreamMode:
     flush_remaining_streams()

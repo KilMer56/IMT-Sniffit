@@ -29,13 +29,24 @@ protocol = args.protocol
 
 # SET FILTERS
 
+## TCP or UDP or BOTH
 filters = "(tcp||udp)" if protocol=='both' else protocol
-filters += "&&(ipv6.dst==" + IPV6_VPN + "||ip.dst==" + IP_VPN + ")"
+## EITHER
+### Destination is VPN
+filters += "&&(((ipv6.dst==" + IPV6_VPN + "||ip.dst==" + IP_VPN + ")"
+### And source is not client
 filters += "&&!(ip.src==" + IP_CLIENT + ")&&!(ipv6.src==" + IPV6_CLIENT + ")"
-filters += "&&!(ip.src==" + IP_SSH + ")&&!(ipv6.src=="+ IPV6_SSH + ")"
+### And source is not ssh
+filters += "&&!(ip.src==" + IP_SSH + ")&&!(ipv6.src=="+ IPV6_SSH + "))"
+## EITHER
+### Source is VPN
+filters += "||((ipv6.src==" + IPV6_VPN + "||ip.src==" + IP_VPN + ")"
+### And destination is not client
+filters += "&&!(ip.dst==" + IP_CLIENT + ")&&!(ipv6.dst==" + IPV6_CLIENT + ")"
+### And destination is not ssh
+filters += "&&!(ip.dst==" + IP_SSH + ")&&!(ipv6.dst=="+ IPV6_SSH + ")))"
 
 # CONFIGURE CAPTURE
-
 print("Output file : src/capture/"+args.output+".pcap")
 capture = pyshark.LiveCapture(interface='en0', display_filter=filters, output_file="./src/capture/"+args.output+".pcap")
 
