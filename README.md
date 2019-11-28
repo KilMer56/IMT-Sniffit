@@ -268,7 +268,51 @@ python3 src/analyzer.py
 
 ## Kibana
 
-`TODO`
+### Configuration des index pattern
+
+!["Kibana Index Pattern Management"](./assets/index_pattern.png)
+
+Dans l'onglet `Management`, cliquer sur `Index Patterns`.
+Il suffit alors de créer un pattern qui matchera les index ElasticSearch. Ne pas oublier dans le processus de création de désigner la champs "timestamp" comme étant le champs temporel de l'index.
+
+### Création de la visualisation
+
+Nous recommandons la représentation `TSVB` de Kibana.
+!["Kibana TSVB"](./assets/tsvb.png)
+
+Le choix de l'intervalle de visualisation se fait en haut à droite, ou en cliquant-glissant sur le graphe.
+
+!["Kibana time interval"](./assets/intervalle.png)
+
+### Onglet data
+
+!["Kibana parameters"](./assets/kibana_parameters.png)
+
+Cet onglet permet de définir plusieurs visualisations.
+
+Plusieurs paramètres peuvent être changés.
+
+Tout d'abord, les filtres :
+
+- `dest`: destination du stream/packet, peut-être vpn, une adresse ip ou une regex (ex : `*facebook*`)
+- `src`: destination du stream/packet, peut-être vpn, une adresse ip ou une regex (ex : `*facebook*`)
+- `protocole`: `udp` ou `tcp`
+
+Ces filtres sont librement composables et optionnels.
+
+Un autre paramètres que nous recommandons est le passage du `chart type` en `Bar` pour avoir une représentation plus lisible.
+
+### Onglet panel
+
+!["Onglet panel"](./assets/panel.png)
+
+Il est possible d'appliquer ces mêmes filtres à toutes les visualisations.
+
+L'intervalle d'agrégation temporelle est également paramétrable depuis cet onglet
+
+### Pour aller plus loin
+
+[Suivre ce lien](https://www.elastic.co/guide/en/kibana/current/index.html)
 
 <a name="evolutions-envisageables"></a>
 
