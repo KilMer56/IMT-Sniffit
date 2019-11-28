@@ -118,7 +118,7 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
 
 ## Recorder
 
-- Enregistrement du flux **Serveur -> VPN** et **VPN -> Serveur **
+- Enregistrement du flux **Serveur -> VPN** et **VPN -> Serveur**
   - Packet **TCP**, **UDP** ou les deux
   - Filtre sur les autres flux possibles (Tunnel SSH, etc.)
 
