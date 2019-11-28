@@ -1,6 +1,6 @@
 # Sniffit-py
 
-L'objectif de ce projet était de fournir les outils nécessaires à l'étude du traffic internet de notre vie courante afin d'être utilisés lors de problématiques liées au Edge Computing
+L'objectif de ce projet était de fournir les outils nécessaires à l'étude du trafic internet de notre vie courante afin d'être utilisés lors de problématiques liées au Edge Computing
 
 # Table des matières
 
@@ -37,7 +37,7 @@ Afin de fournir une solution fonctionnelle en un temps assez court, la portée d
 
 ## Mitmproxy
 
-Mitmproxy permet la mise en place d'un proxy transparent. En installant un certificat particulier sur la machine cliente, il était alors possible d'analyser facilement et de manière détaillée tout le traffic passant sur ce proxy.
+Mitmproxy permet la mise en place d'un proxy transparent. En installant un certificat particulier sur la machine cliente, il était alors possible d'analyser facilement et de manière détaillée tout le trafic passant sur ce proxy.
 
 ### Avantages :
 
@@ -54,7 +54,7 @@ Mitmproxy permet la mise en place d'un proxy transparent. En installant un certi
 
 ## VPN sniffé avec Libtins
 
-Libtins est un wrapper autour de libpcap permettant d'analyser le traffic entrant et sortant d'une machine. Écrite en C++, la librairie se décrit comme presque aussi performant que libpcap, avec des fonctionnalités en plus.
+Libtins est un wrapper autour de libpcap permettant d'analyser le trafic entrant et sortant d'une machine. Écrite en C++, la librairie se décrit comme presque aussi performant que libpcap, avec des fonctionnalités en plus.
 
 ### Avantages :
 
@@ -73,7 +73,7 @@ Libtins est un wrapper autour de libpcap permettant d'analyser le traffic entran
 
 ## VPN sniffé avec PyShark
 
-PyShark est une librairie se basant sur TShark. En lançant un processus TShark, la librairie récupère le contenu du traffic circulant sur la machine et l'encapsule dans des classes haut niveau.
+PyShark est une librairie se basant sur TShark. En lançant un processus TShark, la librairie récupère le contenu du trafic circulant sur la machine et l'encapsule dans des classes haut niveau.
 
 ### Avantages :
 
@@ -94,13 +94,13 @@ PyShark est une librairie se basant sur TShark. En lançant un processus TShark,
 
 ## Recorder
 
-Responsable de la capture du traffic, ce script minimaliste stocke les données dans un fichier pcap utilisable à posteriori
+Responsable de la capture du trafic, ce script minimaliste stocke les données dans un fichier pcap utilisable à posteriori
 
-Le traffic est volontairement stocké dans un fichier plutôt qu'être analysé à la volée afin d'éviter la surcharge de notre VPS disposant de peu de ressources déjà bien mises à mal avec le VPN.
+Le trafic est volontairement stocké dans un fichier plutôt qu'être analysé à la volée afin d'éviter la surcharge de notre VPS disposant de peu de ressources déjà bien mises à mal avec le VPN.
 
 ## Analyzer
 
-Responsable de l'analyse du traffic. L'analyzer vient parcourir les packets enregistrés et viens stocker les informations intéressantes (taille du payload, timestamp) dans le stream correspondant.
+Responsable de l'analyse du trafic. L'analyzer vient parcourir les packets enregistrés et viens stocker les informations intéressantes (taille du payload, timestamp) dans le stream correspondant.
 
 Les écarts entre chaque packets sont analysés et une moyenne est réalisée.
 
