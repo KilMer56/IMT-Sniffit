@@ -66,7 +66,7 @@ filters+="))"
 
 # CONFIGURE CAPTURE
 print("Output file : src/capture/"+args.output+".pcap")
-capture = pyshark.LiveCapture(interface='en0', display_filter=filters, output_file="./src/capture/"+args.output+".pcap")
+capture = pyshark.LiveCapture(interface='eth0', display_filter=filters, output_file="./src/capture/"+args.output+".pcap")
 
 # LAUNCH CAPTURE
 
