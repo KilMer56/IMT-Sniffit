@@ -318,4 +318,12 @@ L'intervalle d'agrégation temporelle est également paramétrable depuis cet on
 
 # Exemples de données obtenus
 
-`TODO UNE IMAGE`
+Vidéo entière présentant les résultats obtenus [ici](https://drive.google.com/file/d/1SblIVRi60NtFEyf-sJC4-HRUMeg59evZ/view?usp=sharing)
+
+### GIF
+
+!["GIF"](./assets/analyzer.gif)
+
+### Static
+
+!["Static"](./assets/example_data.png)
