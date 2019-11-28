@@ -1,6 +1,23 @@
 # Sniffit-py
 
-L'objectif de ce projet était de fournir les outils nécessaires à l'étude du trafic internet de notre vie courante afin d'être utilisés lors de problématiques liées au Edge Computing
+# Contexte et objectif
+
+## Contexte
+
+Les échanges via Internet n'ont pas cessé d’évoluer depuis les années 2000. En effet, nous partageons au quotidien tout une multitude d’objets complexes de différents types et en grand nombre.
+Afin d'améliorer le partage et l’échange de données, différents outils sont apparus dans le but d'observer les différents échanges sur Internet. Si des analyses ont été réalisées pour caractériser le trafic de certaines applications (exemple : YouTube), il n’existe pas à l’heure actuelle d’outil permettant d’extraire de manière agnostique un modèle des objets échangés pour l’ensemble des applications que nous pouvons utiliser au quotidien.
+
+## Objectif
+
+L'objectif de ce projet était de fournir les outils nécessaires à l'étude du trafic internet de notre vie courante afin d'être utilisés lors de problématiques liées au Edge Computing.
+
+Dans les informations à retrouver, on avait par exemple :
+* La taille des paquets échangés
+* Le protocole utilisé
+* Le type des données
+* Etc.
+
+Par la suite, une analyse des données collectées devait être effectué afin de pouvoir donner un état des lieux de la solution produite.
 
 # Table des matières
 
