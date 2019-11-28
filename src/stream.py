@@ -46,12 +46,6 @@ class Stream:
         Flush stream to ElasticSearch.
         Reset the payload and time.
         """
-        # host = None
-        # try:
-        #     host = socket.gethostbyaddr(self.ip_server)[0]
-        # except:
-        #     host = self.ip_server
-        #     pass
         post_data("stream", self.ip_source, self.ip_dest, self.time, self.payload, self.protocol)
         self.payload = 0
         self.time = 0

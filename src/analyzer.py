@@ -14,8 +14,8 @@ stream_map_to_client = {}
 
 load_dotenv()
 
-IP_CLIENT = os.getenv('IP_CLIENT')
-IPV6_CLIENT = os.getenv('IPV6_CLIENT')
+IP_VPN = os.getenv('IP_VPN')
+IPV6_VPN = os.getenv('IPV6_VPN')
 
 # GET ARGUMENTS
 
@@ -42,7 +42,7 @@ def calculate_average_delta(packet):
         index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
         src = packet.ip.src if hasattr(packet, "ip") else packet.ipv6.src
         dst = packet.ip.dst if hasattr(packet, "ip") else packet.ipv6.dst
-        stream_map = stream_map_from_client if src == IP_CLIENT or src == IPV6_CLIENT else stream_map_to_client
+        stream_map = stream_map_from_client if src == IP_VPN or src == IPV6_VPN else stream_map_to_client
 
         if index not in stream_map:
             if hasattr(packet, "ip") :
@@ -67,7 +67,7 @@ def handle_packet(packet):
             index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
             src = packet.ip.src if hasattr(packet, "ip") else packet.ipv6.src
             dst = packet.ip.dst if hasattr(packet, "ip") else packet.ipv6.dst
-            stream_map = stream_map_from_client if src == IP_CLIENT or src == IPV6_CLIENT else stream_map_to_client
+            stream_map = stream_map_from_client if src == IP_VPN or src == IPV6_VPN else stream_map_to_client
             stream_map[index].add_packet(packet)
         else:
             post_data("packet", packet.ip.src, packet.ip.dst, float(packet.sniff_timestamp), int(packet.length.raw_value, 16), protocol)
