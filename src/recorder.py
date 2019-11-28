@@ -33,18 +33,36 @@ protocol = args.protocol
 filters = "(tcp||udp)" if protocol=='both' else protocol
 ## EITHER
 ### Destination is VPN
-filters += "&&(((ipv6.dst==" + IPV6_VPN + "||ip.dst==" + IP_VPN + ")"
+filters += "&&(((ip.dst==" + IP_VPN
+if IPV6_VPN != None and IPV6_VPN != "":
+   filters += "|| ipv6.dst==" + IPV6_VPN + ")"
+else:
+  filters+= ")"
 ### And source is not client
-filters += "&&!(ip.src==" + IP_CLIENT + ")&&!(ipv6.src==" + IPV6_CLIENT + ")"
+filters += "&&!(ip.src==" + IP_CLIENT + ")"
+if IPV6_CLIENT != None and IPV6_CLIENT != "":
+   filters += "&&!(ipv6.src==" + IPV6_CLIENT + ")"
 ### And source is not ssh
-filters += "&&!(ip.src==" + IP_SSH + ")&&!(ipv6.src=="+ IPV6_SSH + "))"
+filters += "&&!(ip.src==" + IP_SSH + ")"
+if IPV6_SSH != None and IPV6_SSH != "":
+   filters += "&&!(ipv6.src==" + IPV6_SSH + ")"
+filters += ")"
 ## EITHER
 ### Source is VPN
-filters += "||((ipv6.src==" + IPV6_VPN + "||ip.src==" + IP_VPN + ")"
+filters += "||((ip.src==" + IP_VPN
+if IPV6_VPN != None and IPV6_VPN != "":
+   filters += "|| ipv6.src==" + IPV6_VPN + ")"
+else:
+  filters+= ")"
 ### And destination is not client
-filters += "&&!(ip.dst==" + IP_CLIENT + ")&&!(ipv6.dst==" + IPV6_CLIENT + ")"
+filters += "&&!(ip.dst==" + IP_CLIENT + ")"
+if IPV6_CLIENT != None and IPV6_CLIENT != "":
+   filters += "&&!(ipv6.dst==" + IPV6_CLIENT + ")"
 ### And destination is not ssh
-filters += "&&!(ip.dst==" + IP_SSH + ")&&!(ipv6.dst=="+ IPV6_SSH + ")))"
+filters += "&&!(ip.dst==" + IP_SSH + ")"
+if IPV6_SSH != None and IPV6_SSH != "":
+   filters += "&&!(ipv6.dst==" + IPV6_SSH + ")"
+filters+="))"
 
 # CONFIGURE CAPTURE
 print("Output file : src/capture/"+args.output+".pcap")
