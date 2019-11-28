@@ -2,7 +2,7 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 es = Elasticsearch([{'host': 'localhost', 'port':9200}])
 
-def post_data(index, timestamp, size):
+def post_data(index, timestamp, size, protocol):
     """
     Index data in the ElasticSearch index
 
@@ -14,7 +14,8 @@ def post_data(index, timestamp, size):
     """
     packet = {
         'timestamp': datetime.fromtimestamp(timestamp),
-        'size': size	
+        'size': size,
+        'protocol': protocol
     }
     
     es.index(index=index, doc_type="packet", body=packet)

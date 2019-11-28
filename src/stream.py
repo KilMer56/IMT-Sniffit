@@ -3,11 +3,9 @@ from es_dao import post_data
 
 class Stream:
     
-    def __init__(self, ip_server, port_server, ip_client, port_client):
+    def __init__(self, ip_server, protocol):
         self.ip_server = ip_server
-        self.port_server = port_server
-        self.ip_client = ip_client
-        self.port_client = port_client
+        self.protocol = protocol
         self.payload = 0
         self.time = 0
         self.deltaNumber = 0
@@ -53,7 +51,7 @@ class Stream:
         except:
             host = self.ip_server
             pass
-        post_data("stream", self.time,  self.payload)
+        post_data("stream", self.time,  self.payload, self.protocol)
         self.payload = 0
         self.time = 0
 

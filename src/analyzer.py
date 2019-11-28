@@ -18,6 +18,9 @@ args = parser.parse_args()
 
 isStreamMode = args.mode == "stream"
 
+def is_processable(packet):
+    return (('tcp' in packet or 'udp' in packet) and ('ip' in packet or 'ipv6' in packet))
+
 def calculate_average_delta(packet):
     """
     Calculate average delta for a stream
@@ -25,17 +28,18 @@ def calculate_average_delta(packet):
     :param packet : packet to handle
     :type packet : Packet
     """
-    if ('TCP' in packet and 'IP' in packet):
-            index = packet.tcp.stream.showname_value
-            if index not in stream_map:
-                if hasattr(packet, "ip") :
-                    stream_map[index] = Stream(packet.ip.src, packet.tcp.srcport, packet.ip.dst, packet.tcp.dstport)
-                else:
-                    stream_map[index] = Stream(packet.ipv6.src, packet.tcp.srcport, packet.ipv6.dst, packet.tcp.dstport)
-            if stream_map[index].time == 0:
-                stream_map[index].set_time(float(packet.sniff_timestamp))
+    if is_processable(packet):
+        protocol = "tcp" if hasattr(packet, "tcp") else "udp"
+        index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
+        if index not in stream_map:
+            if hasattr(packet, "ip") :
+                stream_map[index] = Stream(packet.ip.src, protocol)
             else:
-                stream_map[index].update_delta(float(packet.sniff_timestamp))
+                stream_map[index] = Stream(packet.ipv6.src, protocol)
+        if stream_map[index].time == 0:
+            stream_map[index].set_time(float(packet.sniff_timestamp))
+        else:
+            stream_map[index].update_delta(float(packet.sniff_timestamp))
 
 def handle_packet(packet):
     """
@@ -44,12 +48,13 @@ def handle_packet(packet):
     :param packet : packet to handle
     :type packet : Packet
     """
-    if ('TCP' in packet and 'IP' in packet):
+    if is_processable(packet):
+        protocol = "tcp" if hasattr(packet, "tcp") else "udp"
         if isStreamMode:
-            index = packet.tcp.stream.showname_value
+            index = packet.tcp.stream.showname_value if protocol == "tcp" else packet.udp.stream.showname_value
             stream_map[index].add_packet(packet)
         else:
-            post_data("packet", float(packet.sniff_timestamp), int(packet.length.raw_value, 16))
+            post_data("packet", float(packet.sniff_timestamp), int(packet.length.raw_value, 16), protocol)
 
 def flush_remaining_streams():
     """
