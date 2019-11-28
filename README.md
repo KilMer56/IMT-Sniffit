@@ -208,7 +208,7 @@ Librairies python installées :
 
 ## Sniffer
 
-Maintenant que les dépendances sont en place, configurer le sniffer en mettant à jour les variables d'environnement du fichier `.env`.
+Maintenant que les dépendances sont en place, configurer le sniffer en mettant à jour les variables d'environnement du fichier `src/.env`.
 
 Ces variables permettront de ne pas enregistrer les échanges marqués comme 'Non traité' sur le schéma.
 
@@ -236,7 +236,7 @@ Et en mettant votre ip/ipv6 dans les variables `IP_VPN`, `IPV6_VPN`.
 
 ## Recorder
 
-Pour lancer le recorder, utiliser la commande suivante :
+Pour lancer le recorder, utiliser la commande suivante depuis la racine du projet :
 
 ```shell
 python3 src/recorder.py
@@ -253,7 +253,7 @@ python3 src/recorder.py
 
 ## Analyzer
 
-Après avoir récupéré le fichier .pcap sortant du recorder, lancer l'analyse avec la commande suivante :
+Après avoir récupéré le fichier .pcap sortant du recorder, lancer l'analyse avec la commande suivante depuis la racine du projet :
 
 ```shell
 python3 src/analyzer.py
