@@ -49,8 +49,10 @@ Mitmproxy permet la mise en place d'un proxy transparent. En installant un certi
 - Intrusif
 - Machine-dependent (requiert l'installation d'un certification sur chaque machine)
 - Faible, voire complétement inutlisable, face au Certificate Pinning
-  - Les applications natives s'assurent désormais qu'aucun certificat n'a été introduit afin d'éviter les attaques Man-In-The-Middle. Cette sécurité est contournable en décompilant le code de l'application, en extrayant le morceau de code responsable du pinning, puis en recompilant l'application
-  - Application-dependent
+  - Les applications natives s'assurent désormais qu'aucun certificat n'a été introduit afin d'éviter les attaques Man-In-The-Middle. Pour cela, certaines applications comparent la clef publique ou le certificat envoyé par le serveur avec une clef publique stockée dans l'APK. Si les clefs sont différentes, la connexion sera refusée
+  - Le proxy étant un Man-In-The-Middle, renverra toujours une clef publique qui ne matchera jamais celle de l'application
+  - Contournement possible en décompilant le code l'application, extrayant le morceau de code responsable du pinning, puis en recompilant l'application
+  - Méthode de contournement 'Application-dependent' qui peu s'avérée trop longue et difficile pour de grosses applications
 
 ## VPN sniffé avec Libtins
 
