@@ -1,7 +1,5 @@
 # Sniffit-py
 
-# Contexte et objectif
-
 ## Contexte
 
 Les échanges via Internet n'ont pas cessé d’évoluer depuis les années 2000. En effet, nous partageons au quotidien tout une multitude d’objets complexes de différents types et en grand nombre.
