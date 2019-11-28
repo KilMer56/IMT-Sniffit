@@ -39,7 +39,7 @@ class Stream:
         :type packet : Packet
         """
         self.payload += int(packet.length.raw_value, 16)
-        self.set_time(round(float(packet.sniff_timestamp)))
+        self.set_time(float(packet.sniff_timestamp))
 
     def flush(self, time):
         """
