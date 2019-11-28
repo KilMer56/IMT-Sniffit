@@ -1,14 +1,14 @@
-import os
 import socket
-from datetime import datetime
-from elasticsearch import Elasticsearch
-from dotenv import load_dotenv
+import os
+import json
 
+from dotenv import load_dotenv
+from datetime import datetime
+from store import get_es, get_output_type, append_to_file
 load_dotenv()
+
 IP_VPN = os.getenv('IP_VPN')
-IP_ES = os.getenv('IP_ES')
-PORT_ES = os.getenv('PORT_ES')
-es = Elasticsearch([{'host': IP_ES, 'port': PORT_ES}])
+es = get_es()
 
 def find_host_name(ip):
     """
@@ -25,7 +25,7 @@ def find_host_name(ip):
 
 def post_data(index, source, dest, timestamp, size, protocol):
     """
-    Index data in the ElasticSearch index
+    Index data in the ElasticSearch index or write to the json file
 
     :param index : name of the elasticsearch index
     :type index : str
@@ -44,12 +44,16 @@ def post_data(index, source, dest, timestamp, size, protocol):
     """
     sourceName = "vpn" if source == IP_VPN else find_host_name(source)
     destName = "vpn" if dest == IP_VPN else find_host_name(dest)
+    is_json_output = get_output_type() == "JSON"
     packet = {
-        'timestamp': datetime.fromtimestamp(timestamp),
+        'timestamp': timestamp if is_json_output else datetime.fromtimestamp(timestamp),
         'size': size,
         'protocol': protocol,
         'source': sourceName,
         'dest': destName
     }
-    
-    es.index(index=index, doc_type="packet", body=packet)
+
+    if is_json_output:
+        append_to_file(protocol, json.dumps(packet))
+    else:
+        es.index(index=index, doc_type="packet", body=packet)

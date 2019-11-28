@@ -7,7 +7,8 @@ import traceback
 from dotenv import load_dotenv
 
 from stream import Stream
-from es_dao import post_data
+from dao import post_data
+from store import set_output_type, set_output_name, init_es, open_udp_file, open_tcp_file, close_tcp_file, close_udp_file
 
 stream_map_from_client = {}
 stream_map_to_client = {}
@@ -18,12 +19,22 @@ IP_VPN = os.getenv('IP_VPN')
 IPV6_VPN = os.getenv('IPV6_VPN')
 
 # GET ARGUMENTS
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', '-i', default='capture', nargs='?', help='The name of the output .pcap file')
 parser.add_argument('--mode', '-m', choices=['packet','stream'], default='stream', nargs='?', help='The mode of capture')
+parser.add_argument('--outputType', '-o', choices=['ES','JSON'], default='ES', nargs='?', help='The output type of the result')
 
 args = parser.parse_args()
+
+set_output_type(args.outputType)
+
+# Prepare file or es system
+if args.outputType == "ES":
+    init_es()
+elif args.outputType == "JSON":
+    set_output_name(args.input)
+    open_udp_file()
+    open_tcp_file()
 
 isStreamMode = args.mode == "stream"
 
@@ -45,10 +56,7 @@ def calculate_average_delta(packet):
         stream_map = stream_map_from_client if src == IP_VPN or src == IPV6_VPN else stream_map_to_client
 
         if index not in stream_map:
-            if hasattr(packet, "ip") :
-                stream_map[index] = Stream(src, dst, protocol)
-            else:
-                stream_map[index] = Stream(src, dst, protocol)
+            stream_map[index] = Stream(src, dst, protocol)
         if stream_map[index].time == 0:
             stream_map[index].set_time(float(packet.sniff_timestamp))
         else:
@@ -104,8 +112,17 @@ except:
     pass
 
 print("Starting packet analyzing process")
-capture.apply_on_packets(handle_packet)
-
+try:
+    capture.apply_on_packets(handle_packet)
+except:
+    print("Caught exception during process, last process might have been cut during reception")
+    pass
 
 if isStreamMode:
     flush_remaining_streams()
+
+if args.outputType == "JSON":
+    close_udp_file()
+    close_tcp_file()
+
+print("done")
