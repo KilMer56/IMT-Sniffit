@@ -89,8 +89,8 @@ def flush_remaining_streams():
 
 # ANALYZE THE FILE
 
-print("Input file : src/"+args.input+".pcap")
-capture = pyshark.FileCapture('./src/capture/'+args.input+'.pcap')
+print("Input file : capture/"+args.input+".pcap")
+capture = pyshark.FileCapture('./capture/'+args.input+'.pcap')
 try:
     if isStreamMode:
         print("Calculating average delta")

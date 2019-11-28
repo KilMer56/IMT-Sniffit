@@ -6,7 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 IP_VPN = os.getenv('IP_VPN')
-es = Elasticsearch([{'host': 'localhost', 'port':9200}])
+IP_ES = os.getenv('IP_ES')
+PORT_ES = os.getenv('PORT_ES')
+es = Elasticsearch([{'host': IP_ES, 'port': PORT_ES}])
 
 def find_host_name(ip):
     """
