@@ -26,9 +26,10 @@ Par la suite, une analyse des données collectées devait être effectué afin d
 4. [ Architecture de la solution ](#architecture-de-la-solution)
 5. [ État des lieux ](#etat-des-lieux)
 6. [ Evolutions envisageables ](#evolutions-envisageables)
-7. [ Installation ](#installation)
-8. [ Utilisation ](#utilisation)
-9. [ Exemples de données obtenus ](#exemples-de-données-obtenus)
+7. [ Limites identifiées ](#limites)
+8. [ Installation ](#installation)
+9. [ Utilisation ](#utilisation)
+10. [ Exemples de données obtenus ](#exemples-de-données-obtenus)
 
 <a name="portee-du-projet"></a>
 
@@ -151,7 +152,7 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
     - Récupération des noms d'hôtes à l'aide de requêtes reverse-DNS
     - Flush vers la base de données
 
-<a name="etat-des-lieux"></a>
+<a name="evolutions-envisageables"></a>
 
 # Evolutions envisageables
 
@@ -170,6 +171,13 @@ Ces deux composants peuvent être déployés rapidement grâce à docker et dock
 
 - Industrialiser les tests (au moins unitaire)
 - Un petit peu de refactoring
+
+<a name="limites"></a>
+
+# Limites identifiées
+
+- L'utilisation d'une moyenne afin d'identifier les fins de stream n'est pas optimale. Une analyse des creux devrait offrir des résultats plus pertinents
+- Les histogrammmes affichés actuellement via Kibana ne sont peut-être pas les meilleurs représentations possible. L'identification du début et de la fin d'un stream devrait permettre une représentation plus fidèle des données capturées
 
 <a name="installation"></a>
 
